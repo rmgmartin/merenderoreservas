@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Evento de Calendario</title>
+</head>
+<body>
+    <h1>Crear Evento de Calendario</h1>
+    <form id="eventForm">
+        <label for="title">Título del Evento:</label>
+        <input type="text" id="title" required>
+
+        <label for="date">Fecha:</label>
+        <input type="date" id="date" required>
+
+        <label for="time">Hora:</label>
+        <input type="time" id="time" required>
+
+        <label for="duration">Duración (en horas):</label>
+        <input type="number" id="duration" min="1" max="24" value="1" required>
+
+        <label for="location">Ubicación:</label>
+        <input type="text" id="location">
+
+        <label for="description">Descripción:</label>
+        <textarea id="description"></textarea>
+
+        <button type="submit">Crear Evento</button>
+    </form>
+
+    <p id="successMsg" style="color: green; display: none;">¡El evento ha sido creado! Descarga el archivo para importarlo a tu calendario.</p>
+
+    <script>
+        const form = document.getElementById('eventForm');
+        const successMsg = document.getElementById('successMsg');
+
+        form.addEventListener('submit', (event) => {
+            event.preventDefault();
+
+            // Obtener valores del formulario
+            const title = document.getElementById('title').value;
+            const date = document.getElementById('date').value;
+            const time = document.getElementById('time').value;
+            const duration = document.getElementById('duration').value;
+            const location = document.getElementById('location').value;
+            const description = document.getElementById('description').value;
+
+            // Calcular fecha y hora de finalización
+            const startDateTime = new Date(`${date}T${time}`);
+            const endDateTime = new Date(startDateTime.getTime() + duration * 60 * 60 * 1000);
+
+            // Formato para las fechas en .ics (YYYYMMDDTHHMMSS)
+            const formatDate = (date) => {
+                return date.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+            };
+
+            const start = formatDate(startDateTime);
+            const end = formatDate(endDateTime);
+
+            // Crear el contenido del archivo .ics
+            const icsContent = `BEGIN:VCALENDAR
+VERSION:2.0
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+SUMMARY:${title}
+DTSTART:${start}
+DTEND:${end}
+LOCATION:${location}
+DESCRIPTION:${description}
+END:VEVENT
+END:VCALENDAR`;
+
+            // Crear el archivo y ofrecer descarga
+            const blob = new Blob([icsContent], { type: 'text/calendar' });
+            const url = URL.createObjectURL(blob);
+
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${title.replace(/\s+/g, '_')}.ics`;
+            a.click();
+
+            // Mostrar mensaje de éxito
+            successMsg.style.display = 'block';
+        });
+    </script>
+</body>
+</html>
