@@ -28,6 +28,26 @@
         <ul id="reservaHistorial"></ul>
     </div>
 
+    <p id="errorMsg" style="color: red; display: none;"></p>
+
+    <script>
+        // Verificar conexión con el backend
+        const API_URL = 'http://localhost:3000/reservas';
+
+        fetch(API_URL)
+            .then(response => {
+                if (!response.ok) throw new Error('No se pudo conectar con el servidor.');
+                return response.json();
+            })
+            .then(data => console.log('Conexión exitosa:', data))
+            .catch(error => {
+                const errorMsg = document.getElementById('errorMsg');
+                errorMsg.style.display = 'block';
+                errorMsg.textContent = 'Error: No se pudo conectar con el servidor. Asegúrate de que el backend esté corriendo.';
+                console.error(error);
+            });
+    </script>
+
     <script src="script.js"></script>
 </body>
 </html>
