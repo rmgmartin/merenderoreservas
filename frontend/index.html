@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reservas - Merendero Leo</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Reservas - Merendero Leo</h1>
+    <form id="reservaForm">
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" name="nombre" required>
+
+        <label for="fecha">Fecha:</label>
+        <input type="date" id="fecha" name="fecha" required>
+
+        <label>Horarios:</label>
+        <label><input type="checkbox" name="horarios" value="mañana"> Mañana</label>
+        <label><input type="checkbox" name="horarios" value="tarde"> Tarde</label>
+        <label><input type="checkbox" name="horarios" value="noche"> Noche</label>
+
+        <button type="submit">Reservar</button>
+    </form>
+
+    <div class="reservas">
+        <h2>Historial de Reservas</h2>
+        <ul id="reservaHistorial"></ul>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
