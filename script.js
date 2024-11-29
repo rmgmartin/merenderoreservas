@@ -1,6 +1,6 @@
 // Configuración de Google API
-const CLIENT_ID = '105103493358360477836.apps.googleusercontent.com';
-const API_KEY = '877ae34213ed93839ae7ff96068a15abba1ed5e0';
+const CLIENT_ID = '105103493358360477836.apps.googleusercontent.com'; // Reemplaza con tu CLIENT_ID
+const API_KEY = '877ae34213ed93839ae7ff96068a15abba1ed5e0'; // Reemplaza con tu API_KEY
 const DISCOVERY_DOC = 'https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest';
 const SCOPES = 'https://www.googleapis.com/auth/calendar.events';
 
@@ -8,8 +8,21 @@ const authorizeButton = document.getElementById('authorize_button');
 const signoutButton = document.getElementById('signout_button');
 const eventForm = document.getElementById('eventForm');
 
+// Cargar el cliente al inicializar la página
+document.addEventListener('DOMContentLoaded', handleClientLoad);
+
 function handleClientLoad() {
-    gapi.load('client:auth2', initClient);
+    // Mostrar mensaje de carga
+    const loadingMessage = document.createElement('p');
+    loadingMessage.id = 'loading';
+    loadingMessage.textContent = 'Cargando la API de Google...';
+    document.body.appendChild(loadingMessage);
+
+    // Cargar la biblioteca de Google API
+    gapi.load('client:auth2', () => {
+        document.getElementById('loading').remove(); // Eliminar mensaje de carga
+        initClient();
+    });
 }
 
 function initClient() {
@@ -28,7 +41,8 @@ function initClient() {
         authorizeButton.onclick = handleAuthClick;
         signoutButton.onclick = handleSignoutClick;
     }).catch((error) => {
-        console.error('Error al inicializar API:', error);
+        console.error('Error al inicializar el cliente:', error);
+        alert('No se pudo cargar el cliente de Google. Verifica tus credenciales y configuración.');
     });
 }
 
@@ -73,11 +87,9 @@ eventForm.addEventListener('submit', (e) => {
         calendarId: 'primary',
         resource: event,
     }).then((response) => {
-        alert(`Evento creado: ${response.result.htmlLink}`);
+        alert(`Evento creado exitosamente: ${response.result.htmlLink}`);
     }).catch((error) => {
         console.error('Error al crear evento:', error);
+        alert('No se pudo crear el evento. Revisa la consola para más detalles.');
     });
 });
-
-// Cargar cliente al iniciar la página
-document.addEventListener('DOMContentLoaded', handleClientLoad);
