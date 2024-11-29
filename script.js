@@ -1,5 +1,5 @@
 // Configuración de Google API
-const CLIENT_ID = '105103493358360477836';
+const CLIENT_ID = '105103493358360477836.apps.googleusercontent.com';
 const API_KEY = '877ae34213ed93839ae7ff96068a15abba1ed5e0';
 const DISCOVERY_DOC = 'https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest';
 const SCOPES = 'https://www.googleapis.com/auth/calendar.events';
