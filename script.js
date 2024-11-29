@@ -27,6 +27,8 @@ function initClient() {
 
         authorizeButton.onclick = handleAuthClick;
         signoutButton.onclick = handleSignoutClick;
+    }).catch((error) => {
+        console.error('Error al inicializar API:', error);
     });
 }
 
